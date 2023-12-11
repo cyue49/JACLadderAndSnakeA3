@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class Board {
     private String[][] gameBoard; // 2D-array representing the game board
+    private static final int[][] LADDERS = {{1,38}, {4,14}, {9,31}, {21,42}, {28,84}, {36,44}, {51,67}, {71,91}, {80,100}};
+    private static final int[][] SNAKES = {{16,6}, {48,30}, {62,19}, {64,60}, {93,68}, {95,24}, {97,76}, {98,78}};
 
     // Constructor
     public Board(){
@@ -104,6 +106,11 @@ public class Board {
         }
     }
 
+    /**
+     * Given a Player and a new position, move the Player to the new position
+     * @param p a Player
+     * @param newPosition the new position to which the player will be moved
+     */
     public void movePlayer(Player p, int newPosition){
         p.moveTo(newPosition);
         updateBoard(p);

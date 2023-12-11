@@ -25,17 +25,9 @@ public class Player {
         return previousPosition;
     }
 
-    // Setters
+    // Setter
     public void setPlayTurn(int playTurn) {
         this.playTurn = playTurn;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public void setPreviousPosition(int previousPosition) {
-        this.previousPosition = previousPosition;
     }
 
     /**
