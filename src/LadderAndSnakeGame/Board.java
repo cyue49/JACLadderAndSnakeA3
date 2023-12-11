@@ -23,7 +23,6 @@ public class Board {
      * @return  the position on the board as a number from 1-100
      */
     private int arrayIndicesToBoardPosition(int i, int j){
-        // TODO: check for cases with invalid indices i and j
         if (i%2==0){
             return 100-((i*10)+j);
         }else{
@@ -37,7 +36,6 @@ public class Board {
      * @return an array of size two containing the i-th and j-th indices of the board position number in the game board array
      */
     private int[] boardPositionToArrayIndices(int pos){
-        // TODO: check for cases with invalid position
         int[] indices = new int[2];
         int firstNum = (pos-1)/10; // the 10-th position in (pos-1)
         int secondNum = (pos-1)%10; // the unit position in (pos-1)
@@ -128,7 +126,12 @@ public class Board {
      * @param newPosition the new position to which the player will be moved
      */
     public void movePlayer(Player p, int newPosition){
-        p.moveTo(newPosition);
+        if (moveCases.get(newPosition) != null){ // if new position is the base of a ladder or the head of a snake, move to the end of the ladder or to the tail of the snake
+            int movedPosition = moveCases.get(newPosition);
+            p.moveTo(movedPosition);
+        }else{
+            p.moveTo(newPosition);
+        }
         updateBoard(p);
     }
 }
