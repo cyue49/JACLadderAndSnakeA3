@@ -1,4 +1,6 @@
-package LadderAndSnakeGame;
+package test;
+
+import LadderAndSnakeGame.*;
 
 public class Test {
     public static void main(String[] args) {
