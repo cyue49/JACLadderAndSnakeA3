@@ -1,16 +1,19 @@
 package LadderAndSnakeGame;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Board {
     private String[][] gameBoard; // 2D-array representing the game board
-    private static final int[][] LADDERS = {{1,38}, {4,14}, {9,31}, {21,42}, {28,84}, {36,44}, {51,67}, {71,91}, {80,100}};
-    private static final int[][] SNAKES = {{16,6}, {48,30}, {62,19}, {64,60}, {93,68}, {95,24}, {97,76}, {98,78}};
+    private static final int[][] LADDERS = {{1,38}, {4,14}, {9,31}, {21,42}, {28,84}, {36,44}, {51,67}, {71,91}, {80,100}}; // each array in this 2D-array represents a ladder, with the first number being the starting case of the ladder and the second number being the landing case of the ladder.
+    private static final int[][] SNAKES = {{16,6}, {48,30}, {62,19}, {64,60}, {93,68}, {95,24}, {97,76}, {98,78}}; // each array in this 2D-array represents a snake, with the first number being the head case of the ladder and the second number being the tail case of the ladder.
+    private HashMap<Integer,Integer> moveCases; // cases on the game board where players will be moved to another case if they land there
 
     // Constructor
     public Board(){
         gameBoard = new String[10][10]; // initialize a 10x10 sized game board
         initializeBoard();
+        setupLaddersAndSnakes();
     }
 
     /**
@@ -20,7 +23,6 @@ public class Board {
      * @return  the position on the board as a number from 1-100
      */
     private int arrayIndicesToBoardPosition(int i, int j){
-        // TODO: check for cases with invalid indices i and j
         if (i%2==0){
             return 100-((i*10)+j);
         }else{
@@ -34,7 +36,6 @@ public class Board {
      * @return an array of size two containing the i-th and j-th indices of the board position number in the game board array
      */
     private int[] boardPositionToArrayIndices(int pos){
-        // TODO: check for cases with invalid position
         int[] indices = new int[2];
         int firstNum = (pos-1)/10; // the 10-th position in (pos-1)
         int secondNum = (pos-1)%10; // the unit position in (pos-1)
@@ -53,6 +54,19 @@ public class Board {
     private void initializeBoard(){
         for (String[] row : gameBoard) {
             Arrays.fill(row, "<    >");
+        }
+    }
+
+    /**
+     * Set up the ladders and snakes on the game board
+     */
+    private void setupLaddersAndSnakes(){
+        moveCases = new HashMap<>();
+        for (int[] ladder : LADDERS){ // put all the ladders as move cases
+            moveCases.put(ladder[0], ladder[1]);
+        }
+        for (int[] snake : SNAKES){ // put all the snakes as move cases
+            moveCases.put(snake[0], snake[1]);
         }
     }
 
@@ -112,7 +126,12 @@ public class Board {
      * @param newPosition the new position to which the player will be moved
      */
     public void movePlayer(Player p, int newPosition){
-        p.moveTo(newPosition);
+        if (moveCases.get(newPosition) != null){ // if new position is the base of a ladder or the head of a snake, move to the end of the ladder or to the tail of the snake
+            int movedPosition = moveCases.get(newPosition);
+            p.moveTo(movedPosition);
+        }else{
+            p.moveTo(newPosition);
+        }
         updateBoard(p);
     }
 }
