@@ -1,16 +1,19 @@
 package LadderAndSnakeGame;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Board {
     private String[][] gameBoard; // 2D-array representing the game board
-    private static final int[][] LADDERS = {{1,38}, {4,14}, {9,31}, {21,42}, {28,84}, {36,44}, {51,67}, {71,91}, {80,100}};
-    private static final int[][] SNAKES = {{16,6}, {48,30}, {62,19}, {64,60}, {93,68}, {95,24}, {97,76}, {98,78}};
+    private static final int[][] LADDERS = {{1,38}, {4,14}, {9,31}, {21,42}, {28,84}, {36,44}, {51,67}, {71,91}, {80,100}}; // each array in this 2D-array represents a ladder, with the first number being the starting case of the ladder and the second number being the landing case of the ladder.
+    private static final int[][] SNAKES = {{16,6}, {48,30}, {62,19}, {64,60}, {93,68}, {95,24}, {97,76}, {98,78}}; // each array in this 2D-array represents a snake, with the first number being the head case of the ladder and the second number being the tail case of the ladder.
+    private HashMap<Integer,Integer> moveCases; // cases on the game board where players will be moved to another case if they land there
 
     // Constructor
     public Board(){
         gameBoard = new String[10][10]; // initialize a 10x10 sized game board
         initializeBoard();
+        setupLaddersAndSnakes();
     }
 
     /**
@@ -53,6 +56,19 @@ public class Board {
     private void initializeBoard(){
         for (String[] row : gameBoard) {
             Arrays.fill(row, "<    >");
+        }
+    }
+
+    /**
+     * Set up the ladders and snakes on the game board
+     */
+    private void setupLaddersAndSnakes(){
+        moveCases = new HashMap<>();
+        for (int[] ladder : LADDERS){ // put all the ladders as move cases
+            moveCases.put(ladder[0], ladder[1]);
+        }
+        for (int[] snake : SNAKES){ // put all the snakes as move cases
+            moveCases.put(snake[0], snake[1]);
         }
     }
 
