@@ -34,9 +34,17 @@ public class LadderAndSnake {
     /**
      * Add players to the game according to the number of players
      */
-    public void addPlayers(){
+    private void addPlayers(){
         for (int i=0; i<numPlayers; i++){
             players[i] = new Player();
         }
+    }
+
+    /**
+     * Determine the order of playing turns for all players by having each player throw the dice to obtain the largest possible number.
+     * In case of a tie, the process is repeated only between players with the tie.
+     */
+    private void determinePlayersTurn(){
+        ;
     }
 }
