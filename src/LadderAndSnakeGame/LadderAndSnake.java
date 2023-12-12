@@ -23,19 +23,22 @@ public class LadderAndSnake {
         System.out.println("This game will be played by " + numPlayers + " players.");
 
         // setting player turns
+        System.out.println("Let's start by first figuring out the players' playing turns!");
         String turns = determinePlayersTurn(new ArrayList<>(Arrays.asList(players)));
         for (int i=0; i<turns.length(); i++){
             players[Integer.valueOf(String.valueOf(turns.charAt(i)))-1].setPlayTurn(i);
         }
         Arrays.sort(players);
         System.out.println("The order of playing has been decided as follow: " + Arrays.toString(players).replace("[", "").replace("]", ""));
+
+        playTurn();
     }
 
     /**
      * Roll a dice with six sides numbered from 1 to 6
      * @return an integer between 1 and 6 (inclusive) indicating the result of a dice roll
      */
-    public int flipDice(){
+    private int flipDice(){
         Random rd = new Random();
         return rd.nextInt(6)+1;
     }
@@ -76,7 +79,7 @@ public class LadderAndSnake {
         for (Player player: p){
             int diceVal = flipDice();
             player.setDiceThrow(diceVal);
-            System.out.println("Player " + player.getPlayerID() + " got a dice value of " + diceVal);
+            System.out.println(player + " rolled a dice value of " + diceVal);
         }
         // create a hashmap entry for each dice number
         HashMap<Integer, ArrayList<Player>> diceRolls = new HashMap<>();
@@ -88,5 +91,28 @@ public class LadderAndSnake {
             diceRolls.get(player.getDiceThrow()).add(player);
         }
         return determinePlayersTurn(diceRolls.get(6)) + determinePlayersTurn(diceRolls.get(5)) + determinePlayersTurn(diceRolls.get(4)) + determinePlayersTurn(diceRolls.get(3)) + determinePlayersTurn(diceRolls.get(2)) + determinePlayersTurn(diceRolls.get(1));
+    }
+
+    /**
+     * Given a player, check if this player reached position 100 and won the game
+     * @param p a player
+     * @return true if this player reached exactly the position 100, false otherwise
+     */
+    private boolean checkWinner(Player p){
+        return p.getPosition() == 100;
+    }
+
+    private void playTurn(){
+        System.out.println("Here is the current state of the board: ");
+        board.displayBoard();
+        for (int i=0; i<players.length; i++){ // each player flips the dice and move the player
+            int diceVal = flipDice();
+            players[i].setDiceThrow(diceVal);
+            System.out.println(players[i] + " rolled a " + diceVal + ".");
+            board.movePlayer(players[i], diceVal);
+            System.out.println(players[i] + " moved from case " + players[i].getPreviousPosition() + " to case " + players[i].getPosition() + ".\nHere is the new state of the board: ");
+            board.displayBoard();
+        }
+        System.out.println("No player won this round. Continuing the game.");
     }
 }

@@ -91,7 +91,7 @@ public class Board {
      * @param p a Player object
      */
     public void updateBoard(Player p){
-        int player = p.getPlayTurn(); // player number
+        int player = p.getPlayerID(); // player id
         int prev = p.getPreviousPosition(); // player's previous position
         int curr = p.getPosition(); // player's new position
 
@@ -111,13 +111,19 @@ public class Board {
     }
 
     /**
-     * Given a Player and a new position, move the Player to the new position
+     * Given a Player and a dice roll, find the new position to which the player should be moved to, and move the Player to the new position
      * @param p a Player
-     * @param newPosition the new position to which the player will be moved
+     * @param diceRoll the number rolled by the dice row
      */
-    public void movePlayer(Player p, int newPosition){
+    public void movePlayer(Player p, int diceRoll){
+        int newPosition = p.getPosition() + diceRoll; // new position is player's current position + the dice roll
         if (moveCases.get(newPosition) != null){ // if new position is the base of a ladder or the head of a snake, move to the end of the ladder or to the tail of the snake
             int movedPosition = moveCases.get(newPosition);
+            if (movedPosition > newPosition){ // a ladder
+                System.out.println("Lucky! " + p + " found a ladder! Climbing to position " + movedPosition);
+            }else{ // a snake
+                System.out.println("Oh no! " + p + " found encountered a snake! Running back to position " + movedPosition);
+            }
             p.moveTo(movedPosition);
         }else{
             p.moveTo(newPosition);
