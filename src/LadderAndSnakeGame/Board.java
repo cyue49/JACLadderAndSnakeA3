@@ -111,16 +111,6 @@ public class Board {
     }
 
     /**
-     * Given an array of Player objects, update the game board with the position of each player.
-     * @param players an array of Player objects
-     */
-    public void updateBoard(Player[] players){
-        for (Player p : players){
-            updateBoard(p);
-        }
-    }
-
-    /**
      * Given a Player and a new position, move the Player to the new position
      * @param p a Player
      * @param newPosition the new position to which the player will be moved
