@@ -31,7 +31,16 @@ public class LadderAndSnake {
         Arrays.sort(players);
         System.out.println("The order of playing has been decided as follow: " + Arrays.toString(players).replace("[", "").replace("]", ""));
 
-        playTurn();
+        // playing the game
+        System.out.println("Here is the current state of the board:");
+        board.displayBoard();
+
+        while (true){ // keep playing while no winner
+            if (!playTurn()){ // if win, stop game
+                break;
+            }
+        }
+        System.out.println("============ Thank you for playing! The game has ended! ============");
     }
 
     /**
@@ -102,17 +111,24 @@ public class LadderAndSnake {
         return p.getPosition() == 100;
     }
 
-    private void playTurn(){
-        System.out.println("Here is the current state of the board: ");
-        board.displayBoard();
+    /**
+     * Play a turn of the game. Ends turn when any of the players reaches position 100 and wins.
+     * @return return true if no player won, return false if any player won
+     */
+    private boolean playTurn(){
         for (int i=0; i<players.length; i++){ // each player flips the dice and move the player
             int diceVal = flipDice();
             players[i].setDiceThrow(diceVal);
             System.out.println(players[i] + " rolled a " + diceVal + ".");
-            board.movePlayer(players[i], diceVal);
-            System.out.println(players[i] + " moved from case " + players[i].getPreviousPosition() + " to case " + players[i].getPosition() + ".\nHere is the new state of the board: ");
+            board.movePlayer(players[i], diceVal); // move player to new position based on dice roll
+            System.out.println(players[i] + " moved from position " + players[i].getPreviousPosition() + " to position " + players[i].getPosition() + ".\nHere is the new state of the board: ");
             board.displayBoard();
+            if (checkWinner(players[i])){ // if this player won
+                System.out.println(players[i] + " reached position 100 and won the game!");
+                return false;
+            }
         }
         System.out.println("No player won this round. Continuing the game.");
+        return true;
     }
 }

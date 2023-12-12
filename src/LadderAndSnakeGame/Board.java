@@ -117,12 +117,13 @@ public class Board {
      */
     public void movePlayer(Player p, int diceRoll){
         int newPosition = p.getPosition() + diceRoll; // new position is player's current position + the dice roll
+        if (newPosition > 100)  newPosition = 100-(newPosition%100); // if rolled past 100, go back
         if (moveCases.get(newPosition) != null){ // if new position is the base of a ladder or the head of a snake, move to the end of the ladder or to the tail of the snake
             int movedPosition = moveCases.get(newPosition);
             if (movedPosition > newPosition){ // a ladder
-                System.out.println("Lucky! " + p + " found a ladder! Climbing to position " + movedPosition);
+                System.out.println("Lucky! " + p + " found a ladder at position " + newPosition + "! Climbing to position " + movedPosition);
             }else{ // a snake
-                System.out.println("Oh no! " + p + " found encountered a snake! Running back to position " + movedPosition);
+                System.out.println("Oh no! " + p + " found encountered a snake at position " + newPosition + "! Running back to position " + movedPosition);
             }
             p.moveTo(movedPosition);
         }else{
