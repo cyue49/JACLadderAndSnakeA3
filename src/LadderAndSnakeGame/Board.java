@@ -17,7 +17,29 @@ public class Board {
     }
 
     /**
-     * Given the i-th and j-th indices in a 2D-array, return the position from 1-100 on the 10x10 game board
+     * Initialize the game board with all positions being empty with no player
+     */
+    private void initializeBoard(){
+        for (String[] row : gameBoard) {
+            Arrays.fill(row, "<    >");
+        }
+    }
+
+    /**
+     * Set up the ladders and snakes on the game board
+     */
+    private void setupLaddersAndSnakes(){
+        moveCases = new HashMap<>();
+        for (int[] ladder : LADDERS){ // put all the ladders as move cases
+            moveCases.put(ladder[0], ladder[1]);
+        }
+        for (int[] snake : SNAKES){ // put all the snakes as move cases
+            moveCases.put(snake[0], snake[1]);
+        }
+    }
+
+    /**
+     * Given the i-th and j-th indices in a 2D-array, return the position from 1 to 100 on the 10x10 game board
      * @param   i   the first index of a 2D-array
      * @param   j   the second index of a 2D-array
      * @return  the position on the board as a number from 1-100
@@ -49,35 +71,15 @@ public class Board {
     }
 
     /**
-     * Initialize the game board with all positions being empty with no player
-     */
-    private void initializeBoard(){
-        for (String[] row : gameBoard) {
-            Arrays.fill(row, "<    >");
-        }
-    }
-
-    /**
-     * Set up the ladders and snakes on the game board
-     */
-    private void setupLaddersAndSnakes(){
-        moveCases = new HashMap<>();
-        for (int[] ladder : LADDERS){ // put all the ladders as move cases
-            moveCases.put(ladder[0], ladder[1]);
-        }
-        for (int[] snake : SNAKES){ // put all the snakes as move cases
-            moveCases.put(snake[0], snake[1]);
-        }
-    }
-
-    /**
      * Display the current state of the game board.
      * For each position, the number of the board position is first displayed, followed by players at that position inside the "<" and ">" symbols
      */
     public void displayBoard(){
         System.out.println("=====================================================================================================");
         for (int i=0; i<gameBoard.length; i++){
-            System.out.println("-----------------------------------------------------------------------------------------------------");
+            if (i != 0){ // if not very first line, print divider
+                System.out.println("+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+");
+            }
             for (int j=0; j<gameBoard[i].length; j++){
                 System.out.printf("|%-3d%s", arrayIndicesToBoardPosition(i,j), gameBoard[i][j]);
             }
@@ -87,10 +89,10 @@ public class Board {
     }
 
     /**
-     * Given a Player, update the game board with the position of the player.
+     * Given a Player, update the game board with the current position of the player.
      * @param p a Player object
      */
-    public void updateBoard(Player p){
+    private void updateBoard(Player p){
         int player = p.getPlayerID(); // player id
         int prev = p.getPreviousPosition(); // player's previous position
         int curr = p.getPosition(); // player's new position
@@ -99,14 +101,14 @@ public class Board {
         if (prev >= 1 && prev <= 100){
             int i = boardPositionToArrayIndices(prev)[0];
             int j = boardPositionToArrayIndices(prev)[1];
-            gameBoard[i][j] = gameBoard[i][j].substring(0,player) + " " + gameBoard[i][j].substring(player+1);
+            gameBoard[i][j] = gameBoard[i][j].substring(0,player) + " " + gameBoard[i][j].substring(player+1); // replace the displayed player ID by an empty space
         }
 
         // add player to new position
         if (curr >= 1 && curr <= 100){
             int i = boardPositionToArrayIndices(curr)[0];
             int j = boardPositionToArrayIndices(curr)[1];
-            gameBoard[i][j] = gameBoard[i][j].substring(0,player) + String.valueOf(player) + gameBoard[i][j].substring(player+1);
+            gameBoard[i][j] = gameBoard[i][j].substring(0,player) + player + gameBoard[i][j].substring(player+1); // replace the empty space by the player ID
         }
     }
 
@@ -121,9 +123,9 @@ public class Board {
         if (moveCases.get(newPosition) != null){ // if new position is the base of a ladder or the head of a snake, move to the end of the ladder or to the tail of the snake
             int movedPosition = moveCases.get(newPosition);
             if (movedPosition > newPosition){ // a ladder
-                System.out.println("Lucky! " + p + " found a ladder at position " + newPosition + "! Climbing to position " + movedPosition);
+                System.out.println("\t> Lucky! " + p + " found a ladder at position " + newPosition + "! Climbing to position " + movedPosition);
             }else{ // a snake
-                System.out.println("Oh no! " + p + " found encountered a snake at position " + newPosition + "! Running back to position " + movedPosition);
+                System.out.println("\t> Oh no! " + p + " found encountered a snake at position " + newPosition + "! Running back to position " + movedPosition);
             }
             p.moveTo(movedPosition);
         }else{

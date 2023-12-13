@@ -15,15 +15,25 @@ public class LadderAndSnake {
     }
 
     /**
-     * Initiate the core engine of the game where players start to play.
+     * Add players to the game according to the number of players and give each of then an ID
+     */
+    private void addPlayers(){
+        players = new Player[numPlayers];
+        for (int i=0; i<numPlayers; i++){
+            players[i] = new Player(i+1);
+        }
+    }
+
+    /**
+     * Print a welcome message, decide on players' playing turn, play the game until a player wins, then print a closing message.
      */
     public void play(){
         // welcome message
-        System.out.println("============ Welcome to Chen's Ladder & Snake Game! ============");
-        System.out.println("This game will be played by " + numPlayers + " players.");
+        System.out.println("============== Welcome to Chen's Ladder & Snake Game! ==============\n");
+        System.out.println("This game will be played by " + numPlayers + " players.\n");
 
         // setting player turns
-        System.out.println("Let's start by first figuring out the players' playing turns!");
+        System.out.println("Deciding players' playing turns: ");
         String turns = determinePlayersTurn(new ArrayList<>(Arrays.asList(players)));
         for (int i=0; i<turns.length(); i++){
             players[Integer.valueOf(String.valueOf(turns.charAt(i)))-1].setPlayTurn(i);
@@ -32,14 +42,21 @@ public class LadderAndSnake {
         System.out.println("The order of playing has been decided as follow: " + Arrays.toString(players).replace("[", "").replace("]", ""));
 
         // playing the game
-        System.out.println("Here is the current state of the board:");
+        System.out.println("\nPreparing the board ...\n");
+        System.out.println("Here is the current state of the board before starting the game:");
         board.displayBoard();
+        System.out.println();
 
-        while (true){ // keep playing while no winner
-            if (!playTurn()){ // if win, stop game
-                break;
-            }
+        while (playTurn()){ // keep playing while no winner
+            System.out.println("Here is the current state of the game after this round: ");
+            board.displayBoard();
+            System.out.println("No player won this round. Continuing the game.\n");
         }
+
+        // a player has won, closing message
+        System.out.println("Here is the final state of the game after the last round: ");
+        board.displayBoard();
+        System.out.println();
         System.out.println("============ Thank you for playing! The game has ended! ============");
     }
 
@@ -50,16 +67,6 @@ public class LadderAndSnake {
     private int flipDice(){
         Random rd = new Random();
         return rd.nextInt(6)+1;
-    }
-
-    /**
-     * Add players to the game according to the number of players and give each of then an ID
-     */
-    private void addPlayers(){
-        players = new Player[numPlayers];
-        for (int i=0; i<numPlayers; i++){
-            players[i] = new Player(i+1);
-        }
     }
 
     /**
@@ -81,14 +88,13 @@ public class LadderAndSnake {
                     System.out.print(". ");
                 }
             }
-            System.out.print("Attempting to break the tie.");
-            System.out.println();
+            System.out.print("Attempting to break the tie.\n");
         }
         // each player flip the dice
         for (Player player: p){
             int diceVal = flipDice();
             player.setDiceThrow(diceVal);
-            System.out.println(player + " rolled a dice value of " + diceVal);
+            System.out.println("\t> " + player + " rolled a dice value of " + diceVal);
         }
         // create a hashmap entry for each dice number
         HashMap<Integer, ArrayList<Player>> diceRolls = new HashMap<>();
@@ -103,17 +109,8 @@ public class LadderAndSnake {
     }
 
     /**
-     * Given a player, check if this player reached position 100 and won the game
-     * @param p a player
-     * @return true if this player reached exactly the position 100, false otherwise
-     */
-    private boolean checkWinner(Player p){
-        return p.getPosition() == 100;
-    }
-
-    /**
      * Play a turn of the game. Ends turn when any of the players reaches position 100 and wins.
-     * @return return true if no player won, return false if any player won
+     * @return return true if no player won the game and there is a next turn, return false if any player won the game and there won't be a next turn
      */
     private boolean playTurn(){
         for (int i=0; i<players.length; i++){ // each player flips the dice and move the player
@@ -121,14 +118,14 @@ public class LadderAndSnake {
             players[i].setDiceThrow(diceVal);
             System.out.println(players[i] + " rolled a " + diceVal + ".");
             board.movePlayer(players[i], diceVal); // move player to new position based on dice roll
-            System.out.println(players[i] + " moved from position " + players[i].getPreviousPosition() + " to position " + players[i].getPosition() + ".\nHere is the new state of the board: ");
-            board.displayBoard();
-            if (checkWinner(players[i])){ // if this player won
-                System.out.println(players[i] + " reached position 100 and won the game!");
+            System.out.println("\t> " + players[i] + " moved from position " + players[i].getPreviousPosition() + " to position " + players[i].getPosition() + ".");
+            if (players[i].getPosition() == 100){ // if this player won
+                System.out.println("\n+----------------------------------------------------------+\n" +
+                        "| !!!! " + players[i] + " reached position 100 and won the game !!!! |\n" +
+                        "+----------------------------------------------------------+\n");
                 return false;
             }
         }
-        System.out.println("No player won this round. Continuing the game.");
-        return true;
+        return true; // no player won, has next turn
     }
 }

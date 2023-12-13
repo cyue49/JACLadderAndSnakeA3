@@ -31,7 +31,7 @@ public class PlayLadderAndSnake {
         if (attempts == 4){ // if used up all 4 attempts without correct input display message and exit program
             System.out.println("Bad attmept #" + attempts + "! You have exhausted all your chances. Program will terminate!");
         }else { // start the game with the correct number of players
-            System.out.println("Starting the game ...");
+            System.out.println("\nStarting the game ...\n");
             LadderAndSnake game = new LadderAndSnake(numPlayers);
             game.play();
         }

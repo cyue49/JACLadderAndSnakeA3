@@ -21,10 +21,6 @@ public class Player implements Comparable<Player>{
         return playerID;
     }
 
-    public int getPlayTurn() {
-        return playTurn;
-    }
-
     public int getPosition() {
         return position;
     }
@@ -37,7 +33,7 @@ public class Player implements Comparable<Player>{
         return diceThrow;
     }
 
-    // Setter
+    // Setters
     public void setPlayTurn(int playTurn) {
         this.playTurn = playTurn;
     }
@@ -46,6 +42,7 @@ public class Player implements Comparable<Player>{
         this.diceThrow = diceThrow;
     }
 
+    // printing the player
     @Override
     public String toString() {
         return "Player " + playerID;
@@ -60,6 +57,7 @@ public class Player implements Comparable<Player>{
         position = nextPosition;
     }
 
+    // compare players by their playing turn
     @Override
     public int compareTo(Player p) {
         return Integer.compare(playTurn, p.playTurn);
