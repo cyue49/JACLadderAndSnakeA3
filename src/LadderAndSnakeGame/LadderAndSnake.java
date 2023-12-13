@@ -3,7 +3,7 @@ package LadderAndSnakeGame;
 import java.util.*;
 
 public class LadderAndSnake {
-    private int numPlayers; // the number of players
+    private final int numPlayers; // the number of players
     private Board board; // the game board
     private Player[] players; // the players of the game
 
@@ -42,10 +42,10 @@ public class LadderAndSnake {
         System.out.println("The order of playing has been decided as follow: " + Arrays.toString(players).replace("[", "").replace("]", ""));
 
         // playing the game
-        System.out.println("\nPreparing the board ...\n");
-        System.out.println("Here is the current state of the board before starting the game:");
+        System.out.println("\nPreparing the board ...\n" +
+                "Here is the current state of the board before starting the game:");
         board.displayBoard();
-        System.out.println();
+        System.out.println("Starting the game!\n");
 
         while (playTurn()){ // keep playing while no winner
             System.out.println("Here is the current state of the game after this round: ");
@@ -81,7 +81,7 @@ public class LadderAndSnake {
         if (p.get(0).getDiceThrow() != 0){ // if not the very first roll, display message saying there was a tie
             System.out.print("A tie was achieved between the following players:  ");
             for (int i=0; i<p.size(); i++){
-                System.out.print("Player " + p.get(i).getPlayerID());
+                System.out.print(p.get(i));
                 if (i != p.size()-1){
                     System.out.print(", ");
                 }else {
