@@ -3,7 +3,7 @@ package LadderAndSnakeGame;
 import java.util.*;
 
 /**
- * This class represents a Ladder and Snake game. A game has a set number of players initialized at creation of the object, a game board, and an array of players. Calling play will set up the game to automatically play between all players until a winner is found.
+ * Represents a Ladder and Snake game. A game has a set number of players initialized at creation of the object, a game board, and an array of players. Calling play will set up the game to automatically play between all players until a winner is found.
  * <br>The game will proceed as follows:
  * <ul>
  *     <li>Display a welcome message.</li>
@@ -13,11 +13,17 @@ import java.util.*;
  * </ul>
  */
 public class LadderAndSnake {
-    private final int numPlayers; // the number of players
-    private final Board board; // the game board
-    private Player[] players; // the players of the game
+    /** The number of players for the game */
+    private final int numPlayers;
+    /** Board object representing the game board */
+    private final Board board;
+    /** Array containing all players of the game */
+    private Player[] players;
 
-    // constructor
+    /**
+     * Initialise a LadderAndSnake game with the number of players.
+     * @param numPlayers the number of players of the game
+     */
     public LadderAndSnake(int numPlayers){
         this.numPlayers = numPlayers;
         board = new Board();

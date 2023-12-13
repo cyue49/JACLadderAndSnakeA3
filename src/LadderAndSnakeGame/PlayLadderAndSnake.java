@@ -2,7 +2,13 @@ package LadderAndSnakeGame;
 
 import java.util.Scanner;
 
+/**
+ * Main class that runs the Ladder and Snake game.
+ */
 public class PlayLadderAndSnake {
+    /**
+     * Prompt the user to enter the number of players (between 2 and 4 inclusive), then create a LadderAndSnake object and plays the game.
+     */
     public static void main(String[] args) {
         Scanner kb = new Scanner(System.in);
         int numPlayers = 0; // user's input for the number of players
