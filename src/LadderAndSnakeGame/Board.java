@@ -3,21 +3,53 @@ package LadderAndSnakeGame;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * Represents a 10x10 game board of the Ladder and Snake game. The board has predetermined ladders and snakes positions that are constant and can't be changed. The board itself is represented by a 2D-array and is displayed in 2D.
+ * <br>The class contains methods to display the board, to update the board based on a player's position, and to move a player on the board according to the player's dice throw.
+ * <br>The class also contains helper methods to convert between 2D-array indices and board positions.
+ */
 public class Board {
-    private String[][] gameBoard; // 2D-array representing the game board
-    private static final int[][] LADDERS = {{1,38}, {4,14}, {9,31}, {21,42}, {28,84}, {36,44}, {51,67}, {71,91}, {80,100}}; // each array in this 2D-array represents a ladder, with the first number being the starting case of the ladder and the second number being the landing case of the ladder.
-    private static final int[][] SNAKES = {{16,6}, {48,30}, {62,19}, {64,60}, {93,68}, {95,24}, {97,76}, {98,78}}; // each array in this 2D-array represents a snake, with the first number being the head case of the ladder and the second number being the tail case of the ladder.
-    private HashMap<Integer,Integer> moveCases; // cases on the game board where players will be moved to another case if they land there
+    /** 2D-array representing the 10x10 game board */
+    private final String[][] gameBoard = new String[10][10];
+    /** 2D-arrays representing the ladders on the game board. For each inner array, the first number is the starting position of the ladder and the second number is the landing position of the ladder. */
+    private static final int[][] LADDERS = {{1,38}, {4,14}, {9,31}, {21,42}, {28,84}, {36,44}, {51,67}, {71,91}, {80,100}};
+    /** 2D-arrays representing the snakes on the game board. For each inner array, the first number is the head position of the snake and the second number is the tail position of the snake. */
+    private static final int[][] SNAKES = {{16,6}, {48,30}, {62,19}, {64,60}, {93,68}, {95,24}, {97,76}, {98,78}};
+    /** Cases on the game board that will move players landing on it to another case*/
+    private HashMap<Integer,Integer> moveCases;
 
-    // Constructor
+    /**
+     * Initialize a Board object and set up the ladders and snakes on the board.
+     */
     public Board(){
-        gameBoard = new String[10][10]; // initialize a 10x10 sized game board
         initializeBoard();
         setupLaddersAndSnakes();
     }
 
     /**
-     * Given the i-th and j-th indices in a 2D-array, return the position from 1-100 on the 10x10 game board
+     * Initialize the game board with all positions being empty with no player
+     */
+    private void initializeBoard(){
+        for (String[] row : gameBoard) {
+            Arrays.fill(row, "<    >");
+        }
+    }
+
+    /**
+     * Set up the ladders and snakes on the game board
+     */
+    private void setupLaddersAndSnakes(){
+        moveCases = new HashMap<>();
+        for (int[] ladder : LADDERS){ // put all the ladders as move cases
+            moveCases.put(ladder[0], ladder[1]);
+        }
+        for (int[] snake : SNAKES){ // put all the snakes as move cases
+            moveCases.put(snake[0], snake[1]);
+        }
+    }
+
+    /**
+     * Given the i-th and j-th indices in a 2D-array, return the position from 1 to 100 on the 10x10 game board
      * @param   i   the first index of a 2D-array
      * @param   j   the second index of a 2D-array
      * @return  the position on the board as a number from 1-100
@@ -49,35 +81,15 @@ public class Board {
     }
 
     /**
-     * Initialize the game board with all positions being empty with no player
-     */
-    private void initializeBoard(){
-        for (String[] row : gameBoard) {
-            Arrays.fill(row, "<    >");
-        }
-    }
-
-    /**
-     * Set up the ladders and snakes on the game board
-     */
-    private void setupLaddersAndSnakes(){
-        moveCases = new HashMap<>();
-        for (int[] ladder : LADDERS){ // put all the ladders as move cases
-            moveCases.put(ladder[0], ladder[1]);
-        }
-        for (int[] snake : SNAKES){ // put all the snakes as move cases
-            moveCases.put(snake[0], snake[1]);
-        }
-    }
-
-    /**
      * Display the current state of the game board.
-     * For each position, the number of the board position is first displayed, followed by players at that position inside the "<" and ">" symbols
+     * For each position, the number of the board position is first displayed, followed by players at that position
      */
     public void displayBoard(){
         System.out.println("=====================================================================================================");
         for (int i=0; i<gameBoard.length; i++){
-            System.out.println("-----------------------------------------------------------------------------------------------------");
+            if (i != 0){ // if not very first line, print divider
+                System.out.println("+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+");
+            }
             for (int j=0; j<gameBoard[i].length; j++){
                 System.out.printf("|%-3d%s", arrayIndicesToBoardPosition(i,j), gameBoard[i][j]);
             }
@@ -87,11 +99,11 @@ public class Board {
     }
 
     /**
-     * Given a Player, update the game board with the position of the player.
+     * Given a Player, update the game board with the current position of the player.
      * @param p a Player object
      */
-    public void updateBoard(Player p){
-        int player = p.getPlayTurn(); // player number
+    private void updateBoard(Player p){
+        int player = p.getPlayerID(); // player id
         int prev = p.getPreviousPosition(); // player's previous position
         int curr = p.getPosition(); // player's new position
 
@@ -99,35 +111,32 @@ public class Board {
         if (prev >= 1 && prev <= 100){
             int i = boardPositionToArrayIndices(prev)[0];
             int j = boardPositionToArrayIndices(prev)[1];
-            gameBoard[i][j] = gameBoard[i][j].substring(0,player) + " " + gameBoard[i][j].substring(player+1);
+            gameBoard[i][j] = gameBoard[i][j].substring(0,player) + " " + gameBoard[i][j].substring(player+1); // replace the displayed player ID by an empty space
         }
 
         // add player to new position
         if (curr >= 1 && curr <= 100){
             int i = boardPositionToArrayIndices(curr)[0];
             int j = boardPositionToArrayIndices(curr)[1];
-            gameBoard[i][j] = gameBoard[i][j].substring(0,player) + String.valueOf(player) + gameBoard[i][j].substring(player+1);
+            gameBoard[i][j] = gameBoard[i][j].substring(0,player) + player + gameBoard[i][j].substring(player+1); // replace the empty space by the player ID
         }
     }
 
     /**
-     * Given an array of Player objects, update the game board with the position of each player.
-     * @param players an array of Player objects
-     */
-    public void updateBoard(Player[] players){
-        for (Player p : players){
-            updateBoard(p);
-        }
-    }
-
-    /**
-     * Given a Player and a new position, move the Player to the new position
+     * Given a Player and a dice roll, find the new position to which the player should be moved to, and move the Player to the new position
      * @param p a Player
-     * @param newPosition the new position to which the player will be moved
+     * @param diceRoll the number rolled by the dice row
      */
-    public void movePlayer(Player p, int newPosition){
+    public void movePlayer(Player p, int diceRoll){
+        int newPosition = p.getPosition() + diceRoll; // new position is player's current position + the dice roll
+        if (newPosition > 100)  newPosition = 100-(newPosition%100); // if rolled past 100, go back
         if (moveCases.get(newPosition) != null){ // if new position is the base of a ladder or the head of a snake, move to the end of the ladder or to the tail of the snake
             int movedPosition = moveCases.get(newPosition);
+            if (movedPosition > newPosition){ // a ladder
+                System.out.println("\t> Lucky! " + p + " found a ladder at position " + newPosition + "! Climbing to position " + movedPosition);
+            }else{ // a snake
+                System.out.println("\t> Oh no! " + p + " found encountered a snake at position " + newPosition + "! Running back to position " + movedPosition);
+            }
             p.moveTo(movedPosition);
         }else{
             p.moveTo(newPosition);

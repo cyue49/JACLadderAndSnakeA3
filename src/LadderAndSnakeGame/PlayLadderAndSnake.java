@@ -2,7 +2,13 @@ package LadderAndSnakeGame;
 
 import java.util.Scanner;
 
+/**
+ * Main class that runs the Ladder and Snake game.
+ */
 public class PlayLadderAndSnake {
+    /**
+     * Prompt the user to enter the number of players (between 2 and 4 inclusive), then create a LadderAndSnake object and plays the game.
+     */
     public static void main(String[] args) {
         Scanner kb = new Scanner(System.in);
         int numPlayers = 0; // user's input for the number of players
@@ -31,7 +37,7 @@ public class PlayLadderAndSnake {
         if (attempts == 4){ // if used up all 4 attempts without correct input display message and exit program
             System.out.println("Bad attmept #" + attempts + "! You have exhausted all your chances. Program will terminate!");
         }else { // start the game with the correct number of players
-            System.out.println("Starting the game ...");
+            System.out.println("\nStarting the game ...\n");
             LadderAndSnake game = new LadderAndSnake(numPlayers);
             game.play();
         }
