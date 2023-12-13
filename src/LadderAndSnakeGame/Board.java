@@ -3,15 +3,19 @@ package LadderAndSnakeGame;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * This class represents a 10x10 game board of the Ladder and Snake game. The board has predetermined ladders and snakes positions that are constant and can't be changed. The board itself is represented by a 2D-array and is displayed in 2D.
+ * <br>The class contains methods to display the board, to update the board based on a player's position, and to move a player on the board according to the player's dice throw.
+ * <br>The class also contains helper methods to convert between 2D-array indices and board positions.
+ */
 public class Board {
-    private String[][] gameBoard; // 2D-array representing the game board
+    private final String[][] gameBoard = new String[10][10]; // 2D-array representing the 10x10 game board
     private static final int[][] LADDERS = {{1,38}, {4,14}, {9,31}, {21,42}, {28,84}, {36,44}, {51,67}, {71,91}, {80,100}}; // each array in this 2D-array represents a ladder, with the first number being the starting case of the ladder and the second number being the landing case of the ladder.
     private static final int[][] SNAKES = {{16,6}, {48,30}, {62,19}, {64,60}, {93,68}, {95,24}, {97,76}, {98,78}}; // each array in this 2D-array represents a snake, with the first number being the head case of the ladder and the second number being the tail case of the ladder.
     private HashMap<Integer,Integer> moveCases; // cases on the game board where players will be moved to another case if they land there
 
     // Constructor
     public Board(){
-        gameBoard = new String[10][10]; // initialize a 10x10 sized game board
         initializeBoard();
         setupLaddersAndSnakes();
     }

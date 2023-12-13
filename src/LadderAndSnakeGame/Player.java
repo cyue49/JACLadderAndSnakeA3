@@ -1,5 +1,15 @@
 package LadderAndSnakeGame;
 
+/**
+ * This class represents a player of the Ladder and Snake game. A player has:
+ * <ul>
+ *     <li>An ID set at initialization of the Player object</li>
+ *     <li>A playing turn which indicates the player's turn of playing among many players</li>
+ *     <li>A position indicating the player's current position</li>
+ *     <li>A previous position indicating the player's previous position</li>
+ *     <li>A dice throw indicating the most recent dice throw result of the player</li>
+ * </ul>
+ */
 public class Player implements Comparable<Player>{
     private final int playerID; // The player's ID
     private int playTurn; // The player's turn. Ranges from 1 to total number of players(inclusive). For example, if playTurn = 3, this player would be the third to roll the dice.

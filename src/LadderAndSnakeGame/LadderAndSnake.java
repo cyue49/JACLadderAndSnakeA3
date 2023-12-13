@@ -2,9 +2,19 @@ package LadderAndSnakeGame;
 
 import java.util.*;
 
+/**
+ * This class represents a Ladder and Snake game. A game has a set number of players initialized at creation of the object, a game board, and an array of players. Calling play will set up the game to automatically play between all players until a winner is found.
+ * <br>The game will proceed as follows:
+ * <ul>
+ *     <li>Display a welcome message.</li>
+ *     <li>Decide on the playing turns of all players.</li>
+ *     <li>Play the game turn by turn until a winner is found.</li>
+ *     <li>Display a closing message.</li>
+ * </ul>
+ */
 public class LadderAndSnake {
     private final int numPlayers; // the number of players
-    private Board board; // the game board
+    private final Board board; // the game board
     private Player[] players; // the players of the game
 
     // constructor
@@ -113,15 +123,15 @@ public class LadderAndSnake {
      * @return return true if no player won the game and there is a next turn, return false if any player won the game and there won't be a next turn
      */
     private boolean playTurn(){
-        for (int i=0; i<players.length; i++){ // each player flips the dice and move the player
+        for (Player player : players) { // each player flips the dice and move the player
             int diceVal = flipDice();
-            players[i].setDiceThrow(diceVal);
-            System.out.println(players[i] + " rolled a " + diceVal + ".");
-            board.movePlayer(players[i], diceVal); // move player to new position based on dice roll
-            System.out.println("\t> " + players[i] + " moved from position " + players[i].getPreviousPosition() + " to position " + players[i].getPosition() + ".");
-            if (players[i].getPosition() == 100){ // if this player won
+            player.setDiceThrow(diceVal);
+            System.out.println(player + " rolled a " + diceVal + ".");
+            board.movePlayer(player, diceVal); // move player to new position based on dice roll
+            System.out.println("\t> " + player + " moved from position " + player.getPreviousPosition() + " to position " + player.getPosition() + ".");
+            if (player.getPosition() == 100) { // if this player won
                 System.out.println("\n+----------------------------------------------------------+\n" +
-                        "| !!!! " + players[i] + " reached position 100 and won the game !!!! |\n" +
+                        "| !!!! " + player + " reached position 100 and won the game !!!! |\n" +
                         "+----------------------------------------------------------+\n");
                 return false;
             }
