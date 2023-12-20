@@ -12,4 +12,4 @@ The user is first prompted to enter the total number of players that will play t
 
 ---
 
-The project is written in Java and the main method is located in the *PlayLadderAndSnake* class. The *Board* class represents a game board, the *Player* class represents a player, and the *LadderAndSnake* class represents the game itself where the game mechanism is implemented.
+The project is run by running *PlayLadderAndSnake.java*. The *Board* class represents a game board, the *Player* class represents a player, and the *LadderAndSnake* class represents the game itself where the game mechanism is implemented.
