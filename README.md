@@ -4,7 +4,7 @@
 
 ---
 
-This project is a simple Ladder And Snake game for an OOP course at John Abbot College. 
+This project is a simple Ladder And Snake game for an OOP course at John Abbott College. 
 
 The user is first prompted to enter the total number of players that will play the game. The total number of players is fixed between 2 and 4 (inclusive). The game then plays automatically and shows all the steps and moves made by the players. All players start at position 0 on a fixed 10x10 board, and the first to reach position 100 wins the game. The winner is then declared and the program ends.
 
